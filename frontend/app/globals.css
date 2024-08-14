@@ -1,0 +1,21 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.bg-gradient-grey-to-white-to-grey {
+  background: linear-gradient(180deg, #aaaaaa 0%, #c5c5c5 20%, #9c9c9c 100%);
+}
+
+@font-face {
+  font-family: 'Zig';
+  src: url('/fonts/Zig.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Minecraft';
+  src: url('/fonts/Minecraft.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
