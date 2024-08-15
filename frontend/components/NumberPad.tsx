@@ -1,7 +1,8 @@
+import usePinPad from "@/hooks/usePinPad";
 import classNames from "classnames";
 import React from "react";
 
-const buttonsTypeToString = (button: ButtonsType) => {
+const buttonsTypeToString = (button: ActionButtonType) => {
 	switch (button) {
 		case "button-cancel":
 			return "Cancel";
@@ -15,7 +16,9 @@ const buttonsTypeToString = (button: ButtonsType) => {
 };
 
 const NumberPad = () => {
-	const numberButtons: NumberButtonsType[] = [
+	const { addToPin } = usePinPad();
+
+	const numberButtons: NumberButtonType[] = [
 		{ value: 1, letters: "QZ" },
 		{ value: 2, letters: "ABC" },
 		{ value: 3, letters: "DEF" },
@@ -30,12 +33,33 @@ const NumberPad = () => {
 		{ value: -1 },
 	];
 
-	const actionButtons: ButtonsType[] | undefined = [
+	const actionButtons: ActionButtonType[] | undefined = [
 		"button-cancel",
 		"button-clear",
 		"button-enter",
 		"no-button",
 	];
+
+	const handleNumberClicked = (button: NumberButtonType) => {
+		if (button.value === -1) return;
+		addToPin(button.value.toString());
+	};
+
+	const handleActionsClicked = (button: ActionButtonType) => {
+		switch (button) {
+			case "button-cancel":
+				console.log("Cancel button clicked");
+				break;
+			case "button-clear":
+				console.log("Clear button clicked");
+				break;
+			case "button-enter":
+				console.log("Enter button clicked");
+				break;
+			case "no-button":
+				break;
+		}
+	};
 
 	return (
 		<div className="w-full h-full bg-background-secondary rounded-[20px] border-[3px] border-black flex items-center justify-center gap-10 font-bold ">
@@ -43,10 +67,17 @@ const NumberPad = () => {
 				{numberButtons.map((button, index) => (
 					<button
 						key={index}
-						className="relative w-16 h-12 bg-gradient-grey-to-white-to-grey rounded-sm border-[2px] border-black shadow-inner-2xl"
+						onClick={() => handleNumberClicked(button)}
+						className={`relative w-16 h-12 bg-gradient-grey-to-white-to-grey rounded-sm border-[2px] border-black shadow-inner-2xl ${
+							button.value === -1 ? "disable cursor-default" : ""
+						}`}
 					>
-						<p className="absolute bottom-[2px] left-1 text-4xl">{button.value != -1 && button.value}</p>
-						<p className="absolute top-0 right-[2px] text-xs">{button.letters}</p>
+						<p className="absolute bottom-[2px] left-1 text-4xl">
+							{button.value != -1 && button.value}
+						</p>
+						<p className="absolute top-0 right-[2px] text-xs">
+							{button.letters}
+						</p>
 					</button>
 				))}
 			</div>
@@ -54,13 +85,15 @@ const NumberPad = () => {
 				{actionButtons.map((button, index) => (
 					<button
 						key={index}
+						onClick={() => handleActionsClicked(button)}
 						className={classNames(
 							"w-16 h-12 rounded-sm border-[2px] border-black shadow-inner-2xl",
 							{
 								"bg-[#f45c5b]": button === "button-cancel",
 								"bg-[#e4e773]": button === "button-clear",
 								"bg-[#55cb27]": button === "button-enter",
-								"bg-gradient-grey-to-white-to-grey": button === "no-button",
+								"bg-gradient-grey-to-white-to-grey cursor-default disable":
+									button === "no-button",
 							}
 						)}
 					>

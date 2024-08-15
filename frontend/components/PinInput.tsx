@@ -1,5 +1,6 @@
 // components/PinInput.js
 
+import usePinPad from "@/hooks/usePinPad";
 import { useState } from "react";
 
 import React from "react";
@@ -9,14 +10,7 @@ type PinInputProps = {
 };
 
 const PinInput = ({ pinLength = 8 }: PinInputProps) => {
-	const [pin, setPin] = useState<string>("");
-
-	const handlePinChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		const value = e.target.value;
-		if (value.length <= pinLength) {
-			setPin(value);
-		}
-	};
+	const { pin } = usePinPad();
 
 	return (
 		<div className="flex flex-col items-center bg-pin-pad-background p-2 rounded-[100rem]">
@@ -32,14 +26,7 @@ const PinInput = ({ pinLength = 8 }: PinInputProps) => {
 					/>
 				))}
 			</div>
-			<input
-				type="password"
-				value={pin}
-				onChange={handlePinChange}
-				maxLength={pinLength}
-				className="sr-only" // Hide the input field, as we only need it for managing state
-				aria-label="PIN Input"
-			/>
+			
 		</div>
 	);
 };

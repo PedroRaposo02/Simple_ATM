@@ -1,4 +1,5 @@
 import type { Config } from "tailwindcss";
+import plugin from "tailwindcss";
 
 const config: Config = {
   content: [
@@ -36,6 +37,10 @@ const config: Config = {
       }
     },
   },
-  plugins: [],
+  plugins: [
+    function ({ addVariant }: { addVariant: Function }) {
+      addVariant('child', '& > *');
+    }
+  ],
 };
 export default config;
